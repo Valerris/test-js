@@ -13,7 +13,46 @@
     /> -->
 	</head>
 	<body>
+		<div id="sidenav-container"></div>
+		<!-- <div class="side-nav" touch-action="none">
+			<div class="backdrop" data-sidenav-action="close"></div>
+			<div class="side-nav__main">
+				<div class="side-nav__header">
+					<div class="side-nav__title">Header</div>
+					<button class="side-nav__close" data-sidenav-action="close">
+						Close
+					</button>
+				</div>
+				<div class="side-nav__body">
+					<ul>
+						<li class="side-nav__item"><a href="">Sample link item 1</a></li>
+						<li class="side-nav__item"><a href="">Sample link item 2</a></li>
+						<li class="side-nav__item"><a href="">Sample link item 3</a></li>
+						<li class="side-nav__item"><a href="">Sample link item 4</a></li>
+						<li class="side-nav__item"><a href="">Sample link item 5</a></li>
+						<li class="side-nav__item"><a href="">Sample link item 6</a></li>
+						<li class="side-nav__item"><a href="">Sample link item 7</a></li>
+						<li class="side-nav__item"><a href="">Sample link item 8</a></li>
+						<li class="side-nav__item"><a href="">Sample link item 9</a></li>
+						<li class="side-nav__item"><a href="">Sample link item 9</a></li>
+						<li class="side-nav__item"><a href="">Sample link item 9</a></li>
+						<li class="side-nav__item"><a href="">Sample link item 9</a></li>
+						<li class="side-nav__item"><a href="">Sample link item 9</a></li>
+						<li class="side-nav__item"><a href="">Sample link item 9</a></li>
+						<li class="side-nav__item"><a href="">Sample link item 9</a></li>
+						<li class="side-nav__item"><a href="">Sample link item 9</a></li>
+					</ul>
+				</div>
+				<div class="side-nav__footer">
+					<div class="side-nav__description">
+						Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum
+						fugiat eveniet dolores consectetur laboriosam nihil!
+					</div>
+				</div>
+			</div>
+		</div> -->
 		<main>
+			<button id="sideNav-toggle">Menu toggle</button>
 			<p>
 				Lorem ipsum dolor sit, amet consectetur adipisicing elit. Pariatur quod
 				quasi animi nihil! Odit velit cumque, quasi tempore consequatur ea
@@ -71,6 +110,17 @@
 				quisquam asperiores!
 			</p>
 
+			<div class="drag-container">
+				<div class="empty">
+					<div class="fill"></div>
+				</div>
+				<div class="empty"></div>
+				<div class="empty"></div>
+				<div class="empty"></div>
+				<div class="empty"></div>
+				<div class="empty"></div>
+			</div>
+
 			<div class="the-container"></div>
 
 			<button id="modal">Click</button>
@@ -115,7 +165,7 @@
 				</ul>
 			</nav>
 
-			<div id="scrollarea"></div>
+			<div id="scrollarea" style="height: 35vh;"></div>
 		</main>
 
 		<div hidden class="scroll-line"></div>
@@ -204,9 +254,80 @@
 		<script src="./index.js" charset="utf-8"></script>
 		<script src="./draggingField.js" charset="utf-8"></script>
 		<script src="./modal.js" charset="utf-8"></script>
+		<script src="./dragndrop.js" charset="utf-8"></script>
+		<script src="./sideNav.js" charset="utf-8"></script>
 
 		<script>
 			document.addEventListener("DOMContentLoaded", function() {
+				// side-nav
+				$sidenav.init(document.getElementById("sidenav-container"), {
+					title: "Test title",
+					links: [
+						{
+							href: "1",
+							text: "Sample link item 1"
+						},
+						{
+							href: "2",
+							text: "Sample link item 2"
+						},
+						{
+							href: "3",
+							text: "Sample link item 3"
+						},
+						{
+							href: "4",
+							text: "Sample link item 4"
+						},
+						{
+							href: "5",
+							text: "Sample link item 5"
+						},
+						{
+							href: "6",
+							text: "Sample link item 6"
+						},
+						{
+							href: "7",
+							text: "Sample link item 7"
+						},
+						{
+							href: "8",
+							text: "Sample link item 8"
+						},
+						{
+							href: "9",
+							text: "Sample link item 9"
+						},
+						{
+							href: "9",
+							text: "Sample link item 9"
+						},
+						{
+							href: "9",
+							text: "Sample link item 9"
+						},
+						{
+							href: "9",
+							text: "Sample link item 9"
+						},
+						{
+							href: "9",
+							text: "Sample link item 9"
+						},
+						{
+							href: "9",
+							text: "Sample link item 9"
+						}
+					],
+					description: "Sample footer description"
+				});
+
+				var sideNavToggle = document.getElementById("sideNav-toggle");
+				sideNavToggle.onclick = function(e) {
+					$sidenav.open();
+				};
+
 				// INIT
 
 				// dragging field
@@ -232,10 +353,13 @@
 								text: "CANCEL",
 								className: "Cancel className",
 								handler: function(e) {
-									$modal.destroy();
+									$modal.close();
 								}
 							}
-						]
+						],
+						onClose: function() {
+							$modal.destroy();
+						}
 					});
 
 					$modal.open();

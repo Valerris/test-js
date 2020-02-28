@@ -176,7 +176,7 @@ section::after {
 .scrollarea {
 	position: relative;
 	overflow: hidden;
-	height: 35vh;
+	height: 100%;
 }
 
 .scrollarea__viewport {
@@ -401,7 +401,9 @@ nav {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(255, 255, 255, 0.9);
+	background-color: rgba(19, 19, 19, 0.9);
+	opacity: 0;
+	transition: opacity 0.1s ease;
 }
 
 .modal-container {
@@ -415,8 +417,6 @@ nav {
 	overflow-x: hidden;
 	overflow-y: auto;
 	display: none;
-	opacity: 0;
-	transition: opacity 0.25s ease;
 }
 
 .modal-opened .modal-container--block {
@@ -424,7 +424,8 @@ nav {
 	pointer-events: auto;
 }
 
-.modal-opened .modal-container--visible {
+.sideNav-opened .backdrop,
+.modal-opened .modal-container--visible .backdrop {
 	opacity: 1;
 }
 
@@ -444,8 +445,19 @@ nav {
 	margin: 3rem auto;
 	padding: 1.75rem 1.5rem;
 	border-radius: 0.25rem;
-	background-color: #cfcfcf;
+	background-color: #fff;
 	z-index: 1;
+	opacity: 0;
+	transform: scale(1.1);
+	will-change: transform;
+	transform-origin: center;
+	transition: opacity 0.1s ease, transform 0.1s ease;
+}
+
+.modal-opened .modal-container--visible .modal {
+	opacity: 1;
+	transform: scale(1);
+	transition: opacity 0.1s ease, transform 0.1s ease;
 }
 
 button {
@@ -499,4 +511,124 @@ button {
 	pointer-events: none;
 }
 
-/* Side Menu */
+/* Side menu */
+
+.side-nav {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	overflow: hidden;
+	font-size: 1.25rem;
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+.sideNav-opened {
+	overflow: hidden;
+	pointer-events: none;
+}
+
+.sideNav-opened .side-nav {
+	pointer-events: auto;
+	opacity: 1;
+}
+
+.side-nav__main {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	max-width: 25rem;
+	background-color: #fff;
+}
+
+.side-nav__main {
+	display: flex;
+	flex-direction: column;
+	transform: translateX(-105%);
+	will-change: transform;
+	transition: transform 0.3s ease;
+}
+
+.sideNav-opened .side-nav__main {
+	transform: translateX(0);
+}
+
+.side-nav__header,
+.side-nav__footer {
+	padding: 1.5rem;
+}
+
+.side-nav__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.side-nav__title {
+	font-size: 2rem;
+}
+
+.side-nav__close {
+	position: relative;
+	-webkit-appearance: none;
+	appearance: none;
+	border: none;
+	border-radius: 50%;
+	width: 3rem;
+	height: 3rem;
+	padding: 0;
+	line-height: 0;
+	text-indent: -9999px;
+	overflow: hidden;
+}
+
+.side-nav__close::after {
+	content: "╳";
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	text-indent: 0;
+	line-height: 1;
+}
+
+.side-nav__body {
+	flex-grow: 1;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.side-nav__body > ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.side-nav__item {
+	border-bottom: 1px solid #a5a5a5;
+}
+
+.side-nav__item:hover {
+	background-color: #c5c5c5;
+}
+
+.side-nav__item > a {
+	display: block;
+	padding: 0.75rem 1.5rem;
+	text-decoration: none;
+	color: inherit;
+}
+
+.side-nav__footer {
+	font-size: 0.9rem;
+}

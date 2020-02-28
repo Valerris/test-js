@@ -2,7 +2,8 @@
 	var _scrollarea = (_scrollareaContent = _thumb = null);
 	var _scrollTop = (_min = _max = 0),
 		_ratio = (_y = _target = null),
-		_pressed = true;
+		_pressed = false,
+		_isScrollable = true;
 
 	function _create(options) {
 		var scrollarea = document.createElement("div");
@@ -12,7 +13,7 @@
 			"beforeend",
 			`<div class="scrollarea__viewport">
     <div class="scrollarea__thumb"></div>
-    <div class="scrollarea__content">
+    <div class="scrollarea__content" touch-action="none">
       ${options.content ? options.content : ""}
     </div>
   </div>`
@@ -107,12 +108,19 @@
 
 	function _maxAndRatio() {
 		_max =
-			_scrollarea.offsetHeight -
+			_scrollarea.parentNode.offsetHeight -
 			_thumb.offsetHeight -
 			parseInt(getComputedStyle(_thumb).top) * 2;
 
 		_ratio =
-			_max / (_scrollareaContent.scrollHeight - _scrollarea.offsetHeight);
+			_max /
+			(_scrollareaContent.scrollHeight - _scrollarea.parentNode.offsetHeight);
+
+		if (_ratio >= 1) {
+			_isScrollable = false;
+		}
+
+		console.log(_ratio);
 	}
 
 	function _wheelHandler(e) {
@@ -182,11 +190,20 @@
 		_thumb = _scrollarea.querySelector(".scrollarea__thumb");
 
 		_thumb.style.height =
-			(_scrollareaContent.scrollHeight / _scrollarea.offsetHeight) * 3 + "rem";
+			(_scrollarea.parentNode.offsetHeight / _scrollareaContent.scrollHeight) *
+				20 +
+			"rem";
 
 		_maxAndRatio();
 
-		_initHandlers();
+		if (_isScrollable) {
+			_initHandlers();
+		} else {
+			_scrollarea.parentNode.style.height =
+				_scrollareaContent.scrollHeight + "px";
+
+			_thumb.style.display = "none";
+		}
 	}
 
 	$scrollarea = {

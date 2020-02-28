@@ -97,9 +97,7 @@
 			currentGesture.prevX = clientX;
 			if (btnsCount) {
 				nodeState.startPos =
-					dx < (-btnsCount / 2) * nodeState.btnW
-						? -btnsCount * nodeState.btnW
-						: 0;
+					dx < -(nodeState.btnW / 2) ? -btnsCount * nodeState.btnW : 0;
 			}
 		}
 

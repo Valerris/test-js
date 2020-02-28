@@ -7,7 +7,7 @@
 	// document.head.appendChild(style) ||
 	// 	document.getElementsByTagName("head")[0].appendChild(style);
 
-	var _modal = (_modalBody = _paddingRight = _buttons = _handlers = null);
+	var _modal = (_modalBody = _paddingRight = _buttons = _handlers = _onBeforeClose = _onClose = null);
 
 	function _create(options) {
 		var modalC = document.createElement("div");
@@ -44,7 +44,7 @@
 		_modal.classList.add("modal-container--block");
 		setTimeout(function() {
 			_modal.classList.add("modal-container--visible");
-		}, 70);
+		}, 10);
 		document.body.style.paddingRight = _paddingRight + "px";
 	}
 
@@ -56,6 +56,8 @@
 			_modal.classList.remove("modal-container--block");
 			document.body.classList.remove("modal-opened");
 			document.body.style.paddingRight = 0;
+
+			_onClose && _onClose();
 		}, 350);
 	}
 
@@ -98,8 +100,6 @@
 	}
 
 	function destroy() {
-		close();
-
 		_removeHandlers();
 
 		_modal.remove();
@@ -114,6 +114,15 @@
 		console.log("Handlers have been removed.");
 	}
 
+	function _initHooks(options) {
+		options.onBeforeClose &&
+			typeof options.onClose === "function" &&
+			(_onBeforeClose = options.onClose);
+		options.onClose &&
+			typeof options.onClose === "function" &&
+			(_onClose = options.onClose);
+	}
+
 	function init(container = document.body, options = {}) {
 		_handlers = [];
 
@@ -121,7 +130,7 @@
 
 		_paddingRight = innerWidth - document.documentElement.clientWidth;
 
-		_modal.firstElementChild.style.paddingRight = _paddingRight + "px";
+		_initHooks(options);
 
 		_initHandlers();
 
